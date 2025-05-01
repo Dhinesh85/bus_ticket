@@ -47,7 +47,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/chat/upload-attachment', [ChatController::class, 'uploadAttachment']);
     Route::post('/razorpay/webhook', [RazorpayController::class, 'webhook'])->name('razorpay.webhook');
     Route::post('/razorpay/verify', [RazorpayController::class, 'verify'])->name('razorpay.verify');
-
+    Route::resource('qr-scan', App\Http\Controllers\QrScanController::class);
     Route::resource('category', App\Http\Controllers\ParentCategoryController::class);
     Route::resource('subcategory', App\Http\Controllers\SubCategoryController::class);
     Route::resource('products', App\Http\Controllers\ProductController::class);

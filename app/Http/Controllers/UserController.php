@@ -131,7 +131,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
       
-        try {
+       
             // Handle image upload
             $imagePath = null;
             if ($request->hasFile('profile_image')) {
@@ -148,9 +148,10 @@ class UserController extends Controller
             $user->number = $request->number;
             $user->address = $request->address;
             $user->profile_image = $imagePath;
-            $user->role_id = $request->role_id ?? 2; // Default to regular user if role not provided
+            $user->role_id = $request->role_id ?? 3; // Default to regular user if role not provided
             $user->save();
             
+            dd($user);
             // Get location information
             $From = Location::where('id', $request->from)->pluck('from')->first();
             $To = Location::where('id', $request->to_)->pluck('to')->first();
@@ -195,10 +196,7 @@ class UserController extends Controller
           
     
             return redirect()->route('users.index')->withSuccess('User created and payment processed successfully!');
-        } catch (\Exception $e) {
-            
-            return redirect()->back()->withError('Error: ' . $e->getMessage());
-        }
+        
     }
     
     protected function sendLocationSms($userPhoneNumber, $startDate, $endDate)
