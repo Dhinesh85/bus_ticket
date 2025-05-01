@@ -30,18 +30,49 @@ class UserController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-{
-    try {
-        $user = Auth::user();
-        $roleId = $user->role_id;
-       
-
-        return "welcome to the user index page";
-    } catch (\Exception $e) {
-        dd($e->getMessage());
+    {
+        try {
+            $user = Auth::user();
+            $roleId = $user->role_id;
+    
+            // Active Users: payment_status = 'paid'
+            $activeUsers = DB::table('users')
+                ->join('payments', 'users.id', '=', 'payments.user_id')
+                ->where('payments.payment_status', 'paid')
+                ->select('users.*')
+                ->distinct()
+                ->get();
+    
+            // Deactive Users: payment_status = 'not_paid'
+            $deactiveUsers = DB::table('users')
+                ->join('payments', 'users.id', '=', 'payments.user_id')
+                ->where('payments.payment_status', 'not_paid')
+                ->select('users.*')
+                ->distinct()
+                ->get();
+    
+            // Role permissions
+            $permissions = DB::table('role_has_permissions')
+                ->where('role_id', $roleId)
+                ->get();
+    
+            if ($roleId == 3) {
+                $userDetails = DB::table('users')
+                    ->leftJoin('payments', 'users.id', '=', 'payments.user_id')
+                    ->leftJoin('userlocations', 'users.id', '=', 'userlocations.user_id')
+                    ->leftJoin('roles', 'users.role_id', '=', 'roles.id')
+                    ->where('users.id', $user->id)
+                    ->select('users.*', 'payments.*', 'userlocations.*', 'roles.name as role_name')
+                    ->first();
+    
+                return view('users.index', compact('userDetails', 'activeUsers', 'deactiveUsers', 'permissions'));
+            }
+    
+            return view('users.index', compact('user', 'activeUsers', 'deactiveUsers', 'permissions'));
+        } catch (\Exception $e) {
+            dd($e->getMessage());
+        }
     }
-}
-
 
     
     
