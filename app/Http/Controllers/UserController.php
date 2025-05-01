@@ -34,7 +34,7 @@ class UserController extends Controller
     try {
         $user = Auth::user();
         $roleId = $user->role_id;
-
+        dd($roleId);
         $activeUsers = User::whereHas('payment', function ($query) {
             $query->where('payment_status', 'paid');
         })->get();
@@ -51,7 +51,7 @@ class UserController extends Controller
             return view('users.index', compact('userDetails', 'activeUsers', 'deactiveUsers', 'permissions'));
         }
 
-        return 'welcome to the user dashboard';
+        return view('users.index', compact('user', 'activeUsers', 'deactiveUsers', 'permissions'));
     } catch (\Exception $e) {
         dd($e->getMessage());
     }
