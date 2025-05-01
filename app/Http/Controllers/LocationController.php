@@ -41,7 +41,7 @@ class LocationController extends Controller
         $category->from = $request->input('from');
         $category->to = $request->input('to');
         $category->payment = $request->input('payment');
-        $category->is_active = $request->has('is_active') ? 1 : 0;
+        $category->is_active = 0;
 
         $category->save();
 
@@ -52,7 +52,7 @@ class LocationController extends Controller
             $category->from = $request->input('to');
             $category->to = $request->input('from');
             $category->payment = $request->input('payment');
-            $category->is_active = $request->has('is_active') ? 1 : 0;
+            $category->is_active = 0;
             $category->save();
         }        
 
