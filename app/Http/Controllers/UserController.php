@@ -42,7 +42,7 @@ class UserController extends Controller
                 ->select('users.*')
                 ->distinct()
                 ->get();
-    
+            dd($activeUsers);
             // Deactive Users: payment_status = 'not_paid'
             $deactiveUsers = DB::table('users')
                 ->join('payments', 'users.id', '=', 'payments.user_id')
