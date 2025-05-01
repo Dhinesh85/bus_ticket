@@ -139,55 +139,53 @@
                 <div class="tab-content-container mt-6">
                     <div id="active-locations" class="tab-content">
                         <div class="overflow-auto">
-                        <table id="domesticLocationsTable" class="display nowrap w-full">
-    <thead>
-        <tr>
-            <th>#Id</th>
-            <th>User</th>
-            <th>Start Date</th>
-            <th>End Date</th>
-            <th>City</th>
-            <th>From</th>
-            <th>To</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach ($locations as $location)
-            <tr>
-                <td>{{ $loop->iteration }}</td>
-                <td>{{ $location->user->name ?? 'N/A' }}</td>
-                <td>{{ $location->from }}</td>
-                <td>{{ $location->to }}</td>
-                <td>{{ $location->city }}</td>
-                <td>{{ $location->from }}</td>
-                <td>{{ $location->to }}</td>
-                <td class="flex space-x-2">
-                    {{-- View --}}
-                    @if($permissions->show_permission == 1)
-                        <a href="{{ route('category.show', $location->id) }}"
-                           class="action-icon icon-view" title="View">
-                            <i class="fas fa-eye"></i>
-                        </a>
-                    @endif
+                            <table id="domesticLocationsTable" class="display nowrap w-full">
+                                <thead>
+                                    <tr>
+                                        <th>#Id</th>
+                                        <th>User</th>
+                                        <th>Start Date</th>
+                                        <th>End Date</th>
+                                        <th>city</th>
+                                        <th>From</th>
+                                        <th>To</th>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($locations as $location)
+                                        <tr>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $location->city }}</td>
+                                            <td>{{ $location->from }}</td>
+                                            <td>{{ $location->to }}</td>
+                                            <td>{{ $location->payment }}</td>
+                                            <td class="flex space-x-2">
+                                                {{-- View --}}
+                                                @if($permissions->show_permission == 1)
+                                                    <a href="{{ route('category.show', $location->id) }}"
+                                                       class="action-icon icon-view" title="View">
+                                                        <i class="fas fa-eye"></i>
+                                                    </a>
+                                                @endif
 
-                    {{-- Delete --}}
-                    @if($permissions->delete_permission == 1)
-                        <form action="{{ route('category.destroy', $location->id) }}" method="POST"
-                              onsubmit="return confirm('Are you sure you want to delete this location?')"
-                              class="inline">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="action-icon icon-delete" title="Delete">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
-                        </form>
-                    @endif
-                </td>
-            </tr>
-        @endforeach
-    </tbody>
-</table>
-
+                                                {{-- Delete --}}
+                                                @if($permissions->delete_permission == 1)
+                                                    <form action="{{ route('category.destroy', $location->id) }}" method="POST"
+                                                          onsubmit="return confirm('Are you sure you want to delete this location?')"
+                                                          class="inline">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="action-icon icon-delete" title="Delete">
+                                                            <i class="fas fa-trash-alt"></i>
+                                                        </button>
+                                                    </form>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>

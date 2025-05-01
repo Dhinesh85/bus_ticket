@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('payment')->nullable();
             $table->string('user_id')->nullable();
             $table->string('is_active')->nullable()->default('0');
+            $table->string('is_run')->nullable()->default('0');
             $table->timestamps();
         });
     }
