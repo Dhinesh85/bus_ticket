@@ -130,7 +130,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-       dd($request->all());
+      
         try {
             // Handle image upload
             $imagePath = null;
@@ -150,7 +150,7 @@ class UserController extends Controller
             $user->profile_image = $imagePath;
             $user->role_id = $request->role_id ?? 2; // Default to regular user if role not provided
             $user->save();
-    
+            
             // Get location information
             $From = Location::where('id', $request->from)->pluck('from')->first();
             $To = Location::where('id', $request->to_)->pluck('to')->first();
@@ -166,7 +166,7 @@ class UserController extends Controller
             $assignLocation->user_id = $user->id;
             $assignLocation->is_active = ($request->payment_status === 'paid') ? 1 : 0;
             $assignLocation->save();
-    
+    dd($assignLocation);
             // Send SMS to the user about their location
             $this->sendLocationSms($user->number, $assignLocation->start_date, $assignLocation->end_date);
     
