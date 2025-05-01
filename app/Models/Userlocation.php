@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Userlocation extends Model
 {
     use HasFactory;
+
+    // app/Models/Location.php
+public function user()
+{
+    return $this->belongsTo(User::class);
+}
+
 }
