@@ -37,26 +37,24 @@ class UserController extends Controller
         
         $roleId = $user->role_id;
         
-        // Check permissions
-        $permissions = DB::table('role_has_permissions')
-            ->where('role_id', $roleId)->first();
-            
-        if (!$permissions) {
-            return redirect()->route('dashboard')->with('error', 'You do not have permission to access this page.');
-        }
+        $activeUsers = User::whereHas('payment', function ($query) {
+            $query->where('payment_status', 'paid');
+        })->get();
+    
+        $deactiveUsers = User::whereHas('payment', function ($query) {
+            $query->where('payment_status', 'not_paid');
+        })->get();
 
-        // Eager load relationships to reduce database queries
-        $activeUsers = User::with(['userrole', 'payment'])
-            ->whereHas('payment', function ($query) {
-                $query->where('payment_status', 'paid');
-            })->get();
-        
-        $deactiveUsers = User::with(['userrole', 'payment'])
-            ->whereHas('payment', function ($query) {
-                $query->where('payment_status', 'not_paid');
-            })->get();
-            
-        dd($activeUsers);
+       
+
+        $permissions=DB::table('role_has_permissions')
+            ->where('role_id', $roleId)->first();
+        dd($permissions);
+        if ($roleId == 3) {
+            $users = User::with(['payment', 'userlocation', 'userrole'])
+                ->find($user->id);
+            return view('users.index', compact('users', 'activeUsers', 'deactiveUsers', 'permissions'));
+        }
         
         return view('users.index', compact('user', 'activeUsers', 'deactiveUsers', 'permissions'));
     }
