@@ -50,7 +50,7 @@ class UserController extends Controller
                 ->select('users.*')
                 ->distinct()
                 ->get();
-    dd($activeUsers, $deactiveUsers);
+
             // Role permissions
             $permissions = DB::table('role_has_permissions')
                 ->where('role_id', $roleId)
