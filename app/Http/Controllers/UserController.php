@@ -34,17 +34,17 @@ class UserController extends Controller
     try {
         $user = Auth::user();
         $roleId = $user->role_id;
-        dd($roleId);
-        $activeUsers = User::whereHas('payment', function ($query) {
-            $query->where('payment_status', 'paid');
-        })->get();
+       
+        // $activeUsers = User::whereHas('payment', function ($query) {
+        //     $query->where('payment_status', 'paid');
+        // })->get();
 
-        $deactiveUsers = User::whereHas('payment', function ($query) {
-            $query->where('payment_status', 'not_paid');
-        })->get();
+        // $deactiveUsers = User::whereHas('payment', function ($query) {
+        //     $query->where('payment_status', 'not_paid');
+        // })->get();
 
-        $permissions = DB::table('role_has_permissions')
-            ->where('role_id', $roleId)->get();
+        // $permissions = DB::table('role_has_permissions')
+        //     ->where('role_id', $roleId)->get();
 
         if ($roleId == 3) {
             $userDetails = User::with(['payment', 'userlocation', 'userrole'])->find($user->id);
