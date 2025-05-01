@@ -31,7 +31,10 @@ class UserController extends Controller
      */
     public function index()
     {
+        
         $user = Auth::user();
+
+        dd($user);
         $roleId = $user->role_id;
         
         // Check permissions
