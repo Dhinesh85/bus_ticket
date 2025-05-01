@@ -42,7 +42,7 @@ class UserController extends Controller
                 ->select('users.*')
                 ->distinct()
                 ->get();
-            dd($activeUsers);
+          
             // Deactive Users: payment_status = 'not_paid'
             $deactiveUsers = DB::table('users')
                 ->join('payments', 'users.id', '=', 'payments.user_id')
@@ -50,7 +50,7 @@ class UserController extends Controller
                 ->select('users.*')
                 ->distinct()
                 ->get();
-    
+    dd($activeUsers, $deactiveUsers);
             // Role permissions
             $permissions = DB::table('role_has_permissions')
                 ->where('role_id', $roleId)
