@@ -39,7 +39,7 @@ class UserController extends Controller
             ->where('role_id', $roleId)
             ->get();
 
-            dd($permissions);
+           
             // Fetch active and deactive users based on payment status
             // Active Users: payment_status = 'paid'
             $activeUsers = DB::table('users')
