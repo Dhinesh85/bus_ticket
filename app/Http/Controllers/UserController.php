@@ -51,7 +51,7 @@ class UserController extends Controller
             return view('users.index', compact('userDetails', 'activeUsers', 'deactiveUsers', 'permissions'));
         }
 
-        return view('users.index', compact('user', 'activeUsers', 'deactiveUsers', 'permissions'));
+        return 'welcome to the user dashboard';
     } catch (\Exception $e) {
         dd($e->getMessage());
     }
