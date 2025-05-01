@@ -133,22 +133,15 @@ class UserController extends Controller
       
        
             
-            $imagePath = null;
-            if ($request->hasFile('profile_image')) {
-                $image = $request->file('profile_image');
-                $imageName = time() . '.' . $image->getClientOriginalExtension();
-                $imagePath = $image->storeAs('profile_images', $imageName, 'public');
-            }
-    
-            dd($imagePath);
+           
             $user = new User();
             $user->name = $request->name;
             $user->email = $request->email;
             $user->password = Hash::make($request->password);
             $user->number = $request->number;
             $user->address = $request->address;
-            $user->profile_image = $imagePath;
-            $user->role_id = $request->role_id ?? 3; // Default to regular user if role not provided
+            $user->profile_image = $request->file('profile_image')->store('profile_images', 'public');
+            $user->role_id = $request->role_id ?? 3; 
             $user->save();
             
             dd($user);
