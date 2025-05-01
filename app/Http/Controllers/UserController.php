@@ -168,8 +168,7 @@ class UserController extends Controller
             $assignLocation->is_active = ($request->payment_status === 'paid') ? 1 : 0;
             $assignLocation->save();
     
-            // Send SMS to the user about their location
-            $this->sendLocationSms($user->number, $assignLocation->start_date, $assignLocation->end_date);
+         
     
             // Process payment
             $payment = new Payment();
