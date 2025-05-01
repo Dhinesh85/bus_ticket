@@ -30,34 +30,33 @@ class UserController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-        
+{
+    try {
         $user = Auth::user();
-
-        
         $roleId = $user->role_id;
-        
+
         $activeUsers = User::whereHas('payment', function ($query) {
             $query->where('payment_status', 'paid');
         })->get();
-    
+
         $deactiveUsers = User::whereHas('payment', function ($query) {
             $query->where('payment_status', 'not_paid');
         })->get();
 
-       
+        $permissions = DB::table('role_has_permissions')
+            ->where('role_id', $roleId)->get();
 
-        $permissions=DB::table('role_has_permissions')
-            ->where('role_id', $roleId)->first();
-        dd($permissions);
         if ($roleId == 3) {
-            $users = User::with(['payment', 'userlocation', 'userrole'])
-                ->find($user->id);
-            return view('users.index', compact('users', 'activeUsers', 'deactiveUsers', 'permissions'));
+            $userDetails = User::with(['payment', 'userlocation', 'userrole'])->find($user->id);
+            return view('users.index', compact('userDetails', 'activeUsers', 'deactiveUsers', 'permissions'));
         }
-        
+
         return view('users.index', compact('user', 'activeUsers', 'deactiveUsers', 'permissions'));
+    } catch (\Exception $e) {
+        dd($e->getMessage());
     }
+}
+
 
     
     
