@@ -130,7 +130,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-       
+       dd($request->all());
         try {
             // Handle image upload
             $imagePath = null;

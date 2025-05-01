@@ -62,6 +62,14 @@
                         </x-nav-link>
                     </div>
                 @endif
+
+                
+                    <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                        <x-nav-link :href="route('chat.index')" :active="request()->routeIs('Chat Box.*')">
+                            QR Scan
+                        </x-nav-link>
+                    </div>
+               
             </div>
 
             <!-- User Dropdown -->
