@@ -34,7 +34,7 @@ class UserController extends Controller
         
         $user = Auth::user();
 
-        dd($user);
+        
         $roleId = $user->role_id;
         
         // Check permissions
@@ -56,11 +56,7 @@ class UserController extends Controller
                 $query->where('payment_status', 'not_paid');
             })->get();
             
-        if ($roleId == 3) {
-            $users = User::with(['payment', 'userlocation', 'userrole'])
-                ->find($user->id);
-            return view('users.index', compact('users', 'activeUsers', 'deactiveUsers', 'permissions'));
-        }
+        
         
         return view('users.index', compact('user', 'activeUsers', 'deactiveUsers', 'permissions'));
     }
