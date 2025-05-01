@@ -35,23 +35,8 @@ class UserController extends Controller
         $user = Auth::user();
         $roleId = $user->role_id;
        
-        $activeUsers = User::whereHas('payment', function ($query) {
-            $query->where('payment_status', 'paid');
-        })->get();
 
-        $deactiveUsers = User::whereHas('payment', function ($query) {
-            $query->where('payment_status', 'not_paid');
-        })->get();
-
-        $permissions = DB::table('role_has_permissions')
-            ->where('role_id', $roleId)->get();
-
-        if ($roleId == 3) {
-            $userDetails = User::with(['payment', 'userlocation', 'userrole'])->find($user->id);
-            return view('users.index', compact('userDetails', 'activeUsers', 'deactiveUsers', 'permissions'));
-        }
-
-        return view('users.index', compact('user', 'activeUsers', 'deactiveUsers', 'permissions'));
+        return "welcome to the user index page";
     } catch (\Exception $e) {
         dd($e->getMessage());
     }
