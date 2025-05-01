@@ -43,15 +43,15 @@ class UserController extends Controller
         //     $query->where('payment_status', 'not_paid');
         // })->get();
 
-        // $permissions = DB::table('role_has_permissions')
-        //     ->where('role_id', $roleId)->get();
+        $permissions = DB::table('role_has_permissions')
+            ->where('role_id', $roleId)->get();
 
         if ($roleId == 3) {
             $userDetails = User::with(['payment', 'userlocation', 'userrole'])->find($user->id);
-            return view('users.index', compact('userDetails', 'activeUsers', 'deactiveUsers', 'permissions'));
+            return view('users.index', compact('userDetails', 'permissions'));
         }
 
-        return view('users.index', compact('user', 'activeUsers', 'deactiveUsers', 'permissions'));
+        return view('users.index', compact('user',  'permissions'));
     } catch (\Exception $e) {
         dd($e->getMessage());
     }
