@@ -133,18 +133,25 @@ class UserController extends Controller
       
        
             
-         
+            // $imagePath = null;
+            // if ($request->hasFile('profile_image')) {
+            //     $image = $request->file('profile_image');
+            //     $imageName = time() . '.' . $image->getClientOriginalExtension();
+            //     $imagePath = $image->storeAs('profile_images', $imageName, 'public');
+            // }
+    
+          
             $user = new User();
             $user->name = $request->name;
             $user->email = $request->email;
             $user->password = Hash::make($request->password);
             $user->number = $request->number;
             $user->address = $request->address;
-            $user->profile_image = $request->file('profile_image')->store('profile_images', 'public');
+            // $user->profile_image = $imagePath;
             $user->role_id = $request->role_id ?? 3; 
             $user->save();
             
-            dd($user);
+          
             // Get location information
             $From = Location::where('id', $request->from)->pluck('from')->first();
             $To = Location::where('id', $request->to_)->pluck('to')->first();
@@ -160,7 +167,7 @@ class UserController extends Controller
             $assignLocation->user_id = $user->id;
             $assignLocation->is_active = ($request->payment_status === 'paid') ? 1 : 0;
             $assignLocation->save();
-    dd($assignLocation);
+   
             // Send SMS to the user about their location
             $this->sendLocationSms($user->number, $assignLocation->start_date, $assignLocation->end_date);
     
