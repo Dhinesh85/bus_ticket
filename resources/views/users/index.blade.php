@@ -148,18 +148,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     <div class="py-12">
-        @if($permissions->add_permission == 1 || true)
-        <a href="{{ route('users.create') }}"
-            class="inline-flex items-center px-4 py-2 mb-4 text-xs font-semibold tracking-widest text-white uppercase transition duration-150 ease-in-out bg-gray-800 border border-transparent rounded-md hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray disabled:opacity-25"
-            style="margin-left: 100px;">
-            Create New User
+        @if($permissions->add_permission == 1 )
+        <a href="{{ route('users.create') }}" class="inline-flex items-center px-4 py-2 mb-4 text-xs font-semibold tracking-widest text-black uppercase transition duration-150 ease-in-out bg-green-600 border border-transparent rounded-md hover:bg-green-500 active:bg-green-700 focus:outline-none focus:border-green-700 focus:shadow-outline-gray disabled:opacity-25" style="color: white;">
+            <button class="inline-flex items-center px-4 py-2 my-3 text-xs font-semibold tracking-widest text-white uppercase transition duration-150 ease-in-out bg-gray-800 border border-transparent rounded-md hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray disabled:opacity-25" style="margin-left: 100px;">
+                Create New User</button>
         </a>
         @endif
-
-
+        @if(Auth::user()->role_id == 1)
         <div class="max-w-7xl mx-auto sm:px-3 lg:px-8" style="background-color: transparent; border: 3px solid wheat; border-radius: 20px;">
             <div class="bg-white shadow-xl sm:rounded-lg px-4 py-4" style="background-color: transparent;">
-                @if($roleId == 1)
                 <div class="flex justify-center">
                     <button class="tab-button active py-2 px-4 bg-blue-500 text-white border border-white rounded-lg relative" data-tab="active-users" style="margin-right: 15px;">
                         Active Users
@@ -176,7 +173,7 @@
                     </button>
                 </div>
 
-
+              
                 <div class="tab-content-container mt-6">
                     <!-- Active Users -->
                     <div id="active-users" class="tab-content">
@@ -200,15 +197,15 @@
                                         <td>{{ $loop->iteration }}</td>
                                         <td style="max-width: 100px;">
                                             @if($user->profile_image)
-                                            <img src="{{ Storage::url($user->profile_image) }}" alt="{{ $user->name }}'s profile"
-                                                class="h-10 w-10 rounded-full object-cover border-2 border-blue-500">
+                                                <img src="{{ Storage::url($user->profile_image) }}" alt="{{ $user->name }}'s profile"
+                                                    class="h-10 w-10 rounded-full object-cover border-2 border-blue-500">
                                             @else
-                                            <div class="h-10 w-10 rounded-full bg-gray-300 flex items-center justify-center border-2 border-blue-500">
-                                                <!-- Default people icon (SVG) -->
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-full w-full text-gray-600">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14c-3.866 0-7 3.134-7 7s3.134 7 7 7 7-3.134 7-7-3.134-7-7-7zm0 0c-1.104 0-2-.896-2-2s.896-2 2-2 2 .896 2 2-.896 2-2 2zM12 1c-6.627 0-12 5.373-12 12 0 6.627 5.373 12 12 12s12-5.373 12-12c0-6.627-5.373-12-12-12z"></path>
-                                                </svg>
-                                            </div>
+                                                <div class="h-10 w-10 rounded-full bg-gray-300 flex items-center justify-center border-2 border-blue-500">
+                                                    <!-- Default people icon (SVG) -->
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-full w-full text-gray-600">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14c-3.866 0-7 3.134-7 7s3.134 7 7 7 7-3.134 7-7-3.134-7-7-7zm0 0c-1.104 0-2-.896-2-2s.896-2 2-2 2 .896 2 2-.896 2-2 2zM12 1c-6.627 0-12 5.373-12 12 0 6.627 5.373 12 12 12s12-5.373 12-12c0-6.627-5.373-12-12-12z"></path>
+                                                    </svg>
+                                                </div>
                                             @endif
                                         </td>
 
@@ -287,17 +284,17 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td style="max-width: 100px;">
-                                            @if($user->profile_image)
+                                        @if($user->profile_image)
                                             <img src="{{ Storage::url($user->profile_image) }}" alt="{{ $user->name }}'s profile"
                                                 class="h-10 w-10 rounded-full object-cover border-2 border-blue-500">
-                                            @else
+                                        @else
                                             <div class="h-10 w-10 rounded-full bg-gray-300 flex items-center justify-center border-2 border-blue-500">
                                                 <!-- Default people icon (SVG) -->
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6 text-gray-600">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14c-3.866 0-7 3.134-7 7s3.134 7 7 7 7-3.134 7-7-3.134-7-7-7zm0 0c-1.104 0-2-.896-2-2s.896-2 2-2 2 .896 2 2-.896 2-2 2zM12 1c-6.627 0-12 5.373-12 12 0 6.627 5.373 12 12 12s12-5.373 12-12c0-6.627-5.373-12-12-12z"></path>
                                                 </svg>
                                             </div>
-                                            @endif
+                                        @endif
                                         </td>
                                         <td>{{ $user->name }}</td>
                                         <td>{{ $user->email }}</td>
@@ -347,233 +344,231 @@
                         @endif
                     </div>
                 </div>
+                @elseif(Auth::user()->role_id == 3)
+        <div class="max-w-7xl mx-auto sm:px-3 lg:px-8" style="background-color: transparent; border: 3px solid wheat; border-radius: 20px;">
+            <div class="bg-white shadow-xl sm:rounded-lg px-4 py-4" style="background-color: transparent;">
 
-
-
-                @elseif( $roleId == 3)
-                <div class="max-w-7xl mx-auto sm:px-3 lg:px-8" style="background-color: transparent; border: 3px solid wheat; border-radius: 20px;">
-                    <div class="bg-white shadow-xl sm:rounded-lg px-4 py-4" style="background-color: transparent;">
-
-                        <!-- Tabs header -->
-                        <div class="flex justify-between items-center border-b border-gray-300 mb-4">
-                            <!-- Left side -->
-                            <div class="flex space-x-4">
-                                <button type="button" onclick="showTab('profile')" id="btn-profile" class="tab-btn active-tab text-white">
-                                    Profile
-                                </button>
-                                <!-- Uncomment if needed -->
-                                <!-- <button type="button" onclick="showTab('payment')" id="btn-payment" class="tab-btn text-white">
+                <!-- Tabs header -->
+                <div class="flex justify-between items-center border-b border-gray-300 mb-4">
+    <!-- Left side -->
+                    <div class="flex space-x-4">
+                        <button type="button" onclick="showTab('profile')" id="btn-profile" class="tab-btn active-tab text-white">
+                            Profile
+                        </button>
+                        <!-- Uncomment if needed -->
+                        <!-- <button type="button" onclick="showTab('payment')" id="btn-payment" class="tab-btn text-white">
                             Payment
                         </button> -->
+                    </div>
+
+                    <!-- Right side (two buttons) -->
+                    <div class="flex space-x-2">
+                    @if($permissions->edit_permission == 1 )
+                        <button id="edit-button" type="button" 
+                            class="inline-flex items-center px-4 py-2 my-3 text-xs font-semibold tracking-widest text-white uppercase transition duration-150 ease-in-out bg-green-600 border border-transparent rounded-md hover:bg-green-500 active:bg-green-700 focus:outline-none focus:border-green-700 focus:shadow-outline-gray disabled:opacity-25">
+                                <a href="{{ route('users.edit', Auth::user()->id) }}" class="text-yellow-500 hover:text-yellow-700" title="Edit" style="font-size: medium;margin: 5px 5px;color: blue;">
+                                            Edit
+                                </a>           
+                        </button>
+                        @endif
+                        @if($users->payment->payment_status == 'not_paid')
+    <button id="pay-button" type="button" class="inline-flex items-center px-4 py-2 my-3 text-xs font-semibold tracking-widest text-white uppercase transition duration-150 ease-in-out bg-blue-600 border border-transparent rounded-md hover:bg-blue-500 active:bg-blue-700 focus:outline-none focus:border-blue-700 focus:shadow-outline-gray disabled:opacity-25" style="display: none;">
+        Pay Now
+    </button>
+@endif
+
+                    </div>
+                </div>
+
+                <!-- Tabs content -->
+                <div id="tab-profile" class="tab-content">
+
+                    <div class="flex items-center space-x-10">
+                        <!-- Left: Profile Image -->
+                        <div class="flex-shrink-0" style="margin-top: -25%;height: 200px;">
+                            @if($users->profile_image)
+                            <img src="{{ Storage::url(Auth::user()->profile_image) }}" alt="{{ Auth::user()->name }}'s profile"
+                                class="h-32 w-32 object-cover border-4 border-blue-500 shadow-md rounded-lg">
+                            @else
+                            <div class="h-32 w-32 bg-gray-300 flex items-center justify-center border-4 border-blue-500 shadow-md rounded-lg">
+                                <!-- Default user SVG icon -->
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5.121 17.804A11.955 11.955 0 0112 15c2.21 0 4.295.635 6.004 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>
                             </div>
+                            @endif
 
-                            <!-- Right side (two buttons) -->
-                            <div class="flex space-x-2">
-                                @if($permissions->edit_permission == 1 )
-                                <button id="edit-button" type="button"
-                                    class="inline-flex items-center px-4 py-2 my-3 text-xs font-semibold tracking-widest text-white uppercase transition duration-150 ease-in-out bg-green-600 border border-transparent rounded-md hover:bg-green-500 active:bg-green-700 focus:outline-none focus:border-green-700 focus:shadow-outline-gray disabled:opacity-25">
-                                    <a href="{{ route('users.edit', Auth::user()->id) }}" class="text-yellow-500 hover:text-yellow-700" title="Edit" style="font-size: medium;margin: 5px 5px;color: blue;">
-                                        Edit
-                                    </a>
-                                </button>
-                                @endif
-                                @if($users->payment->payment_status == 'not_paid')
-                                <button id="pay-button" type="button" class="inline-flex items-center px-4 py-2 my-3 text-xs font-semibold tracking-widest text-white uppercase transition duration-150 ease-in-out bg-blue-600 border border-transparent rounded-md hover:bg-blue-500 active:bg-blue-700 focus:outline-none focus:border-blue-700 focus:shadow-outline-gray disabled:opacity-25" style="display: none;">
-                                    Pay Now
-                                </button>
-                                @endif
+                        </div><br>
 
-                            </div>
-                        </div>
-
-                        <!-- Tabs content -->
-                        <div id="tab-profile" class="tab-content">
-
-                            <div class="flex items-center space-x-10">
-                                <!-- Left: Profile Image -->
-                                <div class="flex-shrink-0" style="margin-top: -25%;height: 200px;">
-                                    @if($users->profile_image)
-                                    <img src="{{ Storage::url(Auth::user()->profile_image) }}" alt="{{ Auth::user()->name }}'s profile"
-                                        class="h-32 w-32 object-cover border-4 border-blue-500 shadow-md rounded-lg">
-                                    @else
-                                    <div class="h-32 w-32 bg-gray-300 flex items-center justify-center border-4 border-blue-500 shadow-md rounded-lg">
-                                        <!-- Default user SVG icon -->
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M5.121 17.804A11.955 11.955 0 0112 15c2.21 0 4.295.635 6.004 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0z" />
-                                        </svg>
+                        <!-- Right: Name and Number in 2 columns -->
+                        <div class="w-full" style="margin-left: 55px;">
+                            <form>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <!-- Name -->
+                                    <div>
+                                        <label class="block text-gray-700 font-bold mb-2" for="name" style="color: white;">Name</label>
+                                        <input type="text" id="name" name="name" value="{{ $users->name }}"
+                                            class="w-full px-3 py-2 leading-tight border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                                            style="background-color: transparent; border: 2px solid white; border-radius: 11px; color: white;" readonly disabled>
                                     </div>
-                                    @endif
 
+                                    <!-- Phone (if you want to show email, adjust below) -->
+                                    <div>
+                                        <label class="block text-gray-700 font-bold mb-2" for="phone" style="color: white;">Phone</label>
+                                        <input type="text" id="phone" name="phone" value="{{ $users->number ?? '' }}"
+                                            class="w-full px-3 py-2 leading-tight border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                                            style="background-color: transparent; border: 2px solid white; border-radius: 11px; color: white;" readonly disabled>
+                                    </div>
                                 </div><br>
 
-                                <!-- Right: Name and Number in 2 columns -->
-                                <div class="w-full" style="margin-left: 55px;">
-                                    <form>
-                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                            <!-- Name -->
-                                            <div>
-                                                <label class="block text-gray-700 font-bold mb-2" for="name" style="color: white;">Name</label>
-                                                <input type="text" id="name" name="name" value="{{ $users->name }}"
-                                                    class="w-full px-3 py-2 leading-tight border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                                                    style="background-color: transparent; border: 2px solid white; border-radius: 11px; color: white;" readonly disabled>
-                                            </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <!-- Name -->
+                                    <div>
+                                        <label class="block text-gray-700 font-bold mb-2" for="name" style="color: white;">email</label>
+                                        <input type="text" id="name" name="name" value="{{ $users->email }}"
+                                            class="w-full px-3 py-2 leading-tight border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                                            style="background-color: transparent; border: 2px solid white; border-radius: 11px; color: white;" readonly disabled>
+                                    </div>
 
-                                            <!-- Phone (if you want to show email, adjust below) -->
-                                            <div>
-                                                <label class="block text-gray-700 font-bold mb-2" for="phone" style="color: white;">Phone</label>
-                                                <input type="text" id="phone" name="phone" value="{{ $users->number ?? '' }}"
-                                                    class="w-full px-3 py-2 leading-tight border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                                                    style="background-color: transparent; border: 2px solid white; border-radius: 11px; color: white;" readonly disabled>
-                                            </div>
-                                        </div><br>
+                                    <!-- Phone (if you want to show email, adjust below) -->
+                                    <div>
+                                        <label class="block text-gray-700 font-bold mb-2" for="phone" style="color: white;">Aadhaar</label>
+                                        <input type="text" id="phone" name="phone" value="{{ $users->aadhaar ?? '' }}"
+                                            class="w-full px-3 py-2 leading-tight border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                                            style="background-color: transparent; border: 2px solid white; border-radius: 11px; color: white;" readonly disabled>
+                                    </div>
+                                </div><br>
 
-                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                            <!-- Name -->
-                                            <div>
-                                                <label class="block text-gray-700 font-bold mb-2" for="name" style="color: white;">email</label>
-                                                <input type="text" id="name" name="name" value="{{ $users->email }}"
-                                                    class="w-full px-3 py-2 leading-tight border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                                                    style="background-color: transparent; border: 2px solid white; border-radius: 11px; color: white;" readonly disabled>
-                                            </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <!-- Name -->
+                                    <div>
+                                        <label class="block text-gray-700 font-bold mb-2" for="name" style="color: white;">Amount</label>
+                                        <input type="text" id="name" name="name" value="{{ $users->payment->payment_amount }}"
+                                            class="w-full px-3 py-2 leading-tight border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                                            style="background-color: transparent; border: 2px solid white; border-radius: 11px; color: white;" readonly disabled>
+                                    </div>
 
-                                            <!-- Phone (if you want to show email, adjust below) -->
-                                            <div>
-                                                <label class="block text-gray-700 font-bold mb-2" for="phone" style="color: white;">Aadhaar</label>
-                                                <input type="text" id="phone" name="phone" value="{{ $users->aadhaar ?? '' }}"
-                                                    class="w-full px-3 py-2 leading-tight border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                                                    style="background-color: transparent; border: 2px solid white; border-radius: 11px; color: white;" readonly disabled>
-                                            </div>
-                                        </div><br>
+                                    <div>
+                                        <label class="block text-gray-700 font-bold mb-2" for="name" style="color: white;">Payment Method</label>
+                                        <input type="text" id="name" name="name" value="{{ $users->payment->payment_method }}"
+                                            class="w-full px-3 py-2 leading-tight border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                                            style="background-color: transparent; border: 2px solid white; border-radius: 11px; color: white;" readonly disabled>
+                                    </div>
+                                </div><br>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <!-- Name -->
+                                    <div>
+                                        <label class="block text-gray-700 font-bold mb-2" for="name" style="color: white;">Start Date</label>
+                                        <input type="text" id="name" name="name" value="{{ $users->userlocation->start_date }}"
+                                            class="w-full px-3 py-2 leading-tight border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                                            style="background-color: transparent; border: 2px solid white; border-radius: 11px; color: white;" readonly disabled>
+                                    </div>
 
-                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                            <!-- Name -->
-                                            <div>
-                                                <label class="block text-gray-700 font-bold mb-2" for="name" style="color: white;">Amount</label>
-                                                <input type="text" id="name" name="name" value="{{ $users->payment->payment_amount }}"
-                                                    class="w-full px-3 py-2 leading-tight border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                                                    style="background-color: transparent; border: 2px solid white; border-radius: 11px; color: white;" readonly disabled>
-                                            </div>
-
-                                            <div>
-                                                <label class="block text-gray-700 font-bold mb-2" for="name" style="color: white;">Payment Method</label>
-                                                <input type="text" id="name" name="name" value="{{ $users->payment->payment_method }}"
-                                                    class="w-full px-3 py-2 leading-tight border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                                                    style="background-color: transparent; border: 2px solid white; border-radius: 11px; color: white;" readonly disabled>
-                                            </div>
-                                        </div><br>
-                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                            <!-- Name -->
-                                            <div>
-                                                <label class="block text-gray-700 font-bold mb-2" for="name" style="color: white;">Start Date</label>
-                                                <input type="text" id="name" name="name" value="{{ $users->userlocation->start_date }}"
-                                                    class="w-full px-3 py-2 leading-tight border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                                                    style="background-color: transparent; border: 2px solid white; border-radius: 11px; color: white;" readonly disabled>
-                                            </div>
-
-                                            <!-- Phone (if you want to show email, adjust below) -->
-                                            <div>
-                                                <label class="block text-gray-700 font-bold mb-2" for="phone" style="color: white;">End Date</label>
-                                                <input type="text" id="phone" name="phone" value="{{ $users->userlocation->end_date ?? '' }}"
-                                                    class="w-full px-3 py-2 leading-tight border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                                                    style="background-color: transparent; border: 2px solid white; border-radius: 11px; color: white;" readonly disabled>
-                                            </div>
-                                        </div><br>
-                                        <div class="mt-6">
-                                            <label class="block text-gray-700 font-bold mb-2" for="address" style="color: white;">Address</label>
-                                            <textarea id="address" name="address" rows="3"
-                                                class="w-full px-3 py-2 leading-tight border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                                                style="background-color: transparent; border: 2px solid white; border-radius: 11px; color: white;" readonly disabled>{{ $users->address ?? '' }}</textarea>
-                                        </div>
-                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                            <!-- Name -->
-                                            <div>
-                                                <label class="block text-gray-700 font-bold mb-2" for="name" style="color: white;">Pay Date</label>
-                                                <span class="inline-block py-1 px-3 text-xs font-semibold text-white bg-green-500 rounded-full" style="border: 2px solid white">
-                                                    {{ $users->payment->payment_date }}
-                                                </span>
-                                            </div>
-
-                                            <div>
-                                                <label class="block text-gray-700 font-bold mb-2" for="phone" style="color: white;">Status</label>
-                                                @if(Auth::user()->payment->payment_status == 'paid')
-                                                <span class="inline-block py-1 px-3 text-xs font-semibold text-white bg-green-500 rounded-full" style="border: 2px solid white">
-                                                    Active
-                                                </span>
-                                                @else
-                                                <span class="inline-block py-1 px-3 text-xs font-semibold text-white bg-red-500 rounded-full" style="border: 2px solid white">
-                                                    Inactive
-                                                </span>
-                                                @endif
-                                            </div>
-                                        </div>
-                                    </form>
+                                    <!-- Phone (if you want to show email, adjust below) -->
+                                    <div>
+                                        <label class="block text-gray-700 font-bold mb-2" for="phone" style="color: white;">End Date</label>
+                                        <input type="text" id="phone" name="phone" value="{{ $users->userlocation->end_date ?? '' }}"
+                                            class="w-full px-3 py-2 leading-tight border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                                            style="background-color: transparent; border: 2px solid white; border-radius: 11px; color: white;" readonly disabled>
+                                    </div>
+                                </div><br>
+                                <div class="mt-6">
+                                    <label class="block text-gray-700 font-bold mb-2" for="address" style="color: white;">Address</label>
+                                    <textarea id="address" name="address" rows="3"
+                                        class="w-full px-3 py-2 leading-tight border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                                        style="background-color: transparent; border: 2px solid white; border-radius: 11px; color: white;" readonly disabled>{{ $users->address ?? '' }}</textarea>
                                 </div>
-                            </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <!-- Name -->
+                                    <div>
+                                        <label class="block text-gray-700 font-bold mb-2" for="name" style="color: white;">Pay Date</label>
+                                        <span class="inline-block py-1 px-3 text-xs font-semibold text-white bg-green-500 rounded-full" style="border: 2px solid white">
+                                            {{ $users->payment->payment_date }}
+                                        </span>
+                                    </div>
 
+                                    <div>
+                                        <label class="block text-gray-700 font-bold mb-2" for="phone" style="color: white;">Status</label>
+                                        @if(Auth::user()->payment->payment_status == 'paid')
+                                        <span class="inline-block py-1 px-3 text-xs font-semibold text-white bg-green-500 rounded-full" style="border: 2px solid white">
+                                            Active
+                                        </span>
+                                        @else
+                                        <span class="inline-block py-1 px-3 text-xs font-semibold text-white bg-red-500 rounded-full" style="border: 2px solid white">
+                                            Inactive
+                                        </span>
+                                        @endif
+                                    </div>
+                                </div>
+                            </form>
                         </div>
-
                     </div>
 
                 </div>
 
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-                <script>
-                    function showTab(tabName) {
-                        document.getElementById('tab-profile').classList.add('hidden');
-                        document.getElementById('tab-payment').classList.add('hidden');
-                        document.getElementById('btn-profile').classList.remove('active-tab');
-                        document.getElementById('btn-payment').classList.remove('active-tab');
+            </div>
 
-                        document.getElementById('tab-' + tabName).classList.remove('hidden');
-                        document.getElementById('btn-' + tabName).classList.add('active-tab');
+            </div>
+        </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script>
+        function showTab(tabName) {
+            document.getElementById('tab-profile').classList.add('hidden');
+            document.getElementById('tab-payment').classList.add('hidden');
+            document.getElementById('btn-profile').classList.remove('active-tab');
+            document.getElementById('btn-payment').classList.remove('active-tab');
+
+            document.getElementById('tab-' + tabName).classList.remove('hidden');
+            document.getElementById('btn-' + tabName).classList.add('active-tab');
+        }
+        
+    </script>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var payButton = document.getElementById('pay-button');
+
+            // Check if payment is unpaid, then show the pay button
+            @if(Auth::user()->payment->payment_status != 'paid')
+                payButton.style.display = 'inline-flex';
+            @endif
+
+            payButton.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                var options = {
+                    "key": "rzp_test_9rbMunIeD8GRCj", // Razorpay Key ID
+                    "amount": "{{ (Auth::user()->payment->payment_amount ?? 0) * 100 }}", // Razorpay expects amount in paise
+                    "currency": "INR",
+                    "name": "{{ Auth::user()->name }}",
+                    "description": "Payment for Service",
+                    "image": "{{ Storage::url(Auth::user()->profile_image ?? '') }}", // Optional
+                    "handler": function (response){
+                        alert("Payment successful! Razorpay Payment ID: " + response.razorpay_payment_id);
+                        // TODO: Send the payment ID to your server via AJAX and update the database
+                    },
+                    "prefill": {
+                        "name": "{{ Auth::user()->name }}",
+                        "email": "{{ Auth::user()->email }}",
+                        "contact": "{{ Auth::user()->number }}"
+                    },
+                    "theme": {
+                        "color": "#3399cc"
                     }
-                </script>
+                };
+                var rzp = new Razorpay(options);
+                rzp.open();
+            });
+        });
+    </script>
+        @endif
 
-                <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-                <script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                        var payButton = document.getElementById('pay-button');
-
-                        // Check if payment is unpaid, then show the pay button
-                        @if(Auth::user() - > payment - > payment_status != 'paid')
-                        payButton.style.display = 'inline-flex';
-                        @endif
-
-                        payButton.addEventListener('click', function(e) {
-                            e.preventDefault();
-
-                            var options = {
-                                "key": "rzp_test_9rbMunIeD8GRCj", // Razorpay Key ID
-                                "amount": "{{ (Auth::user()->payment->payment_amount ?? 0) * 100 }}", // Razorpay expects amount in paise
-                                "currency": "INR",
-                                "name": "{{ Auth::user()->name }}",
-                                "description": "Payment for Service",
-                                "image": "{{ Storage::url(Auth::user()->profile_image ?? '') }}", // Optional
-                                "handler": function(response) {
-                                    alert("Payment successful! Razorpay Payment ID: " + response.razorpay_payment_id);
-                                    // TODO: Send the payment ID to your server via AJAX and update the database
-                                },
-                                "prefill": {
-                                    "name": "{{ Auth::user()->name }}",
-                                    "email": "{{ Auth::user()->email }}",
-                                    "contact": "{{ Auth::user()->number }}"
-                                },
-                                "theme": {
-                                    "color": "#3399cc"
-                                }
-                            };
-                            var rzp = new Razorpay(options);
-                            rzp.open();
-                        });
-                    });
-                </script>
-                @endif
 
             </div>
         </div>
     </div>
-
 
     {{-- jQuery + DataTables JS --}}
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
