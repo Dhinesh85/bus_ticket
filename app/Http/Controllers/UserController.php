@@ -133,14 +133,14 @@ class UserController extends Controller
       
        
             
-           dd($request->all());
+         
             $user = new User();
             $user->name = $request->name;
             $user->email = $request->email;
             $user->password = Hash::make($request->password);
             $user->number = $request->number;
             $user->address = $request->address;
-            $user->profile_image = $request->file('profile_image')->store('profile_images', 'public');
+     
             $user->role_id = $request->role_id ?? 3; 
             $user->save();
             
