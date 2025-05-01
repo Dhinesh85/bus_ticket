@@ -132,7 +132,7 @@ class UserController extends Controller
     {
       
        
-            // Handle image upload
+            
             $imagePath = null;
             if ($request->hasFile('profile_image')) {
                 $image = $request->file('profile_image');
@@ -140,7 +140,7 @@ class UserController extends Controller
                 $imagePath = $image->storeAs('profile_images', $imageName, 'public');
             }
     
-            // Create user
+            dd($imagePath);
             $user = new User();
             $user->name = $request->name;
             $user->email = $request->email;
