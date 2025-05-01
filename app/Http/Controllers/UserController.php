@@ -56,7 +56,7 @@ class UserController extends Controller
                 $query->where('payment_status', 'not_paid');
             })->get();
             
-        
+        dd($activeUsers);
         
         return view('users.index', compact('user', 'activeUsers', 'deactiveUsers', 'permissions'));
     }
