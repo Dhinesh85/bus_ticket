@@ -140,7 +140,7 @@ class UserController extends Controller
             $user->password = Hash::make($request->password);
             $user->number = $request->number;
             $user->address = $request->address;
-     
+            $user->profile_image = $request->file('profile_image')->store('profile_images', 'public');
             $user->role_id = $request->role_id ?? 3; 
             $user->save();
             
