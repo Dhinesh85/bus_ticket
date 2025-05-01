@@ -12,11 +12,11 @@ class PermissionTableSeeder extends Seeder
     public function run(): void
     {
         // Reset roles and permissions
-        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+      
         Permission::truncate();
         Role::truncate();
         DB::table('role_has_permissions')->truncate();
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
 
         // Create roles
         $roles = [
