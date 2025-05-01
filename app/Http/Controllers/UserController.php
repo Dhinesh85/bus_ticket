@@ -133,7 +133,7 @@ class UserController extends Controller
       
        
             
-           
+           dd($request->all());
             $user = new User();
             $user->name = $request->name;
             $user->email = $request->email;
