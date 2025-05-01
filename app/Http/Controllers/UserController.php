@@ -35,6 +35,12 @@ class UserController extends Controller
             $user = Auth::user();
             $roleId = $user->role_id;
     
+            $permissions = DB::table('role_has_permissions')
+            ->where('role_id', $roleId)
+            ->get();
+
+            dd($permissions);
+            // Fetch active and deactive users based on payment status
             // Active Users: payment_status = 'paid'
             $activeUsers = DB::table('users')
                 ->join('payments', 'users.id', '=', 'payments.user_id')
@@ -52,9 +58,7 @@ class UserController extends Controller
                 ->get();
 
             // Role permissions
-            $permissions = DB::table('role_has_permissions')
-                ->where('role_id', $roleId)
-                ->get();
+           
     
             if ($roleId == 3) {
                 $userDetails = DB::table('users')
