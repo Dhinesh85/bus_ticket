@@ -130,8 +130,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        DB::beginTransaction();
-    
+       
         try {
             // Handle image upload
             $imagePath = null;
@@ -167,7 +166,7 @@ class UserController extends Controller
             $assignLocation->user_id = $user->id;
             $assignLocation->is_active = ($request->payment_status === 'paid') ? 1 : 0;
             $assignLocation->save();
-    dd($assignLocation);
+    
             // Send SMS to the user about their location
             $this->sendLocationSms($user->number, $assignLocation->start_date, $assignLocation->end_date);
     
@@ -193,12 +192,11 @@ class UserController extends Controller
     
             $payment->save();
     
-            // Commit the transaction
-            DB::commit();
+          
     
             return redirect()->route('users.index')->withSuccess('User created and payment processed successfully!');
         } catch (\Exception $e) {
-            DB::rollBack();
+            
             return redirect()->back()->withError('Error: ' . $e->getMessage());
         }
     }
