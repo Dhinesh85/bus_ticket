@@ -1,3 +1,11 @@
+@php
+$userInfoText =
+"Name : {$user->name}\n" .
+"Email : {$user->email}\n" .
+"Phone : {$user->number}\n" .
+"Role : {$user->userrole->name}\n" .
+"Address : {$user->address}\n" ;
+@endphp
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
@@ -400,7 +408,11 @@
                                 </svg>
                             </div>
                             @endif
-
+                            <div class="col-md-4" style="text-align: center;">
+                                            <!-- QR Code container with box styling -->
+                                            <div id="qrcode" style="border: 3px solid #ccc; padding: 10px; box-sizing: border-box;"></div>
+                                            <p class="mt-2" style="color: white;">Scan to view user info</p>
+                                        </div>
                         </div><br>
 
                         <!-- Right: Name and Number in 2 columns -->
@@ -571,7 +583,21 @@
             </div>
         </div>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const userData = @json($userInfoText);
 
+                        new QRCode(document.getElementById("qrcode"), {
+                            text: userData,
+                            width: 300, // Width of the QR code
+                            height: 300, // Height of the QR code
+                            colorDark: "#000000", // Set dark color to black
+                            colorLight: "#ffffff", // Set light color (background) to white
+                            correctLevel: QRCode.CorrectLevel.H // Higher error correction level
+                        });
+                    });
+                </script>
     {{-- jQuery + DataTables JS --}}
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>

@@ -148,7 +148,7 @@ class UserController extends Controller
             $user->number = $request->number;
             $user->address = $request->address;
             $user->profile_image = $imagePath;
-            $user->role_id = $request->role_id ?? 3; // Default to regular user if role not provided
+            $user->role_id = $request->role_id ?? 2; // Default to regular user if role not provided
             $user->save();
             
             // Get location information
