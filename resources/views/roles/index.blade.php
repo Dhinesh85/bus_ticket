@@ -149,9 +149,8 @@
     <div class="py-12">
         @if($permissions->add_permission == 1 )
         <a title="new" href="{{ route('roles.create') }}"
-            class="inline-flex items-center px-4 py-2 mb-4 text-xs font-semibold tracking-widest text-black uppercase transition duration-150 ease-in-out bg-green-600 border border-transparent rounded-md hover:bg-green-500 active:bg-green-700 focus:outline-none focus:border-green-700 focus:shadow-outline-gray disabled:opacity-25" style="color: white;">
-            <button class="inline-flex items-center px-4 py-2 my-3 text-xs font-semibold tracking-widest text-white uppercase transition duration-150 ease-in-out bg-gray-800 border border-transparent rounded-md hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray disabled:opacity-25" style="margin-left: 150px;">
-                Create New Role</button>
+        class="inline-flex items-center px-4 py-2 mb-4 text-xs font-semibold tracking-widest text-white uppercase transition duration-150 ease-in-out bg-gray-800 border border-transparent rounded-md hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray disabled:opacity-25"
+        style="margin-left: 100px;">                           Create New Role
         </a>
         @endif
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -210,14 +209,14 @@
                                     <!-- KEY : MULTIPERMISSION starts -->
                                     @if($permissions->show_permission == 1 )
                                     <a title="show" href="{{ route('roles.show', $role->id) }}"
-                                        class="text-blue-500 hover:text-blue-700" title="View" style="font-size: medium;margin: 5px 5px">
+                                        class="text-blue-500 hover:text-blue-700" title="View" >
                                         <i class="fas fa-eye"></i>
 
                                     </a>
                                     @endif
                                     @if($permissions->edit_permission == 1 )
                                     <a title="edit" href="{{ route('roles.edit', $role->id) }}"
-                                        class="text-yellow-500 hover:text-yellow-700" title="Edit" style="font-size: medium;margin: 5px 5px;color: blue;">
+                                        class="text-yellow-500 hover:text-yellow-700" title="Edit" >
                                         <i class="fas fa-edit"></i>
                                     </a>
                                     @endif
@@ -226,7 +225,7 @@
                                     @method('DELETE')
                                     <button type="submit" title="delete"
                                         class="text-red-500 hover:text-red-700"
-                                        onclick="return confirm('Are you sure you want to delete this ?')" style="font-size: medium;margin: 5px 5px;color: red;">
+                                        onclick="return confirm('Are you sure you want to delete this ?')" >
                                         <i class="fas fa-trash-alt"></i>
                                     </button>
                                     @endif

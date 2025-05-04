@@ -35,6 +35,7 @@
                             <label for="textemail" class="block mb-2 text-sm font-bold text-gray-700" style="color: white;">Email <span class="text-red-600">*</span></label>
                             <input type="text" class="w-full px-3 py-2 leading-tight border rounded shadow appearance-none focus:outline-none focus:shadow-outline" name="email" placeholder="Enter email" value="{{ old('email') }}" required style="background-color: transparent; border: 2px solid white; border-radius: 11px; color: white;">
                             @error('email') <span class="text-red-600">{{ $message }}</span> @enderror
+                            
                         </div>
 
                         <div class="mb-4">

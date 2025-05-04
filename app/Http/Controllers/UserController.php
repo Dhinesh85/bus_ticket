@@ -10,6 +10,7 @@ use App\Http\Requests\UserUpdateRequest;
 use App\Models\Location;
 use App\Models\payment;
 use App\Models\Userlocation;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -25,7 +26,7 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-   
+
     /**
      * Display a listing of the resource.
      */
@@ -34,52 +35,43 @@ class UserController extends Controller
         try {
             $user = Auth::user();
             $roleId = $user->role_id;
-    
-            $permissions = DB::table('role_has_permissions')
-            ->where('role_id', $roleId)
-            ->first();
-
-           
-            // Fetch active and deactive users based on payment status
-            // Active Users: payment_status = 'paid'
-            $activeUsers = DB::table('users')
-                ->join('payments', 'users.id', '=', 'payments.user_id')
-                ->where('payments.payment_status', 'paid')
-                ->select('users.*')
-                ->distinct()
-                ->get();
+            
           
-            // Deactive Users: payment_status = 'not_paid'
-            $deactiveUsers = DB::table('users')
-                ->join('payments', 'users.id', '=', 'payments.user_id')
-                ->where('payments.payment_status', 'not_paid')
-                ->select('users.*')
-                ->distinct()
-                ->get();
-
-            // Role permissions
+            $permissions =DB::table('role_has_permissions')
+                ->where('role_id', $roleId)
+              ->first();
            
-    
+
+
+            $activeUsers = User::whereHas('payment', function ($query) {
+                $query->where('payment_status', 'paid');
+            })->with(['userrole', 'payment'])->get();
+            
+          
+            $deactiveUsers = User::whereHas('payment', function ($query) {
+                $query->where('payment_status', 'not_paid');
+            })->with(['userrole', 'payment'])->get();
+            
+            
             if ($roleId == 3) {
-                $userDetails = DB::table('users')
-                    ->leftJoin('payments', 'users.id', '=', 'payments.user_id')
-                    ->leftJoin('userlocations', 'users.id', '=', 'userlocations.user_id')
-                    ->leftJoin('roles', 'users.role_id', '=', 'roles.id')
-                    ->where('users.id', $user->id)
-                    ->select('users.*', 'payments.*', 'userlocations.*', 'roles.name as role_name')
-                    ->first();
-    
-                return view('users.index', compact('userDetails', 'activeUsers', 'deactiveUsers', 'permissions'));
+               
+                $user = User::where('id', $user->id)->first();
+                $payment = Payment::where('user_id', $user->id)->first();
+                $userLocation = Userlocation::where('user_id', $user->id)->first();
+                return view('users.index', compact('user', 'payment','userLocation','activeUsers', 'deactiveUsers', 'permissions'));
             }
-    
+            
             return view('users.index', compact('user', 'activeUsers', 'deactiveUsers', 'permissions'));
         } catch (\Exception $e) {
-            dd($e->getMessage());
+            \Log::error('Error in users index: ' . $e->getMessage());
+            return back()->with('error', 'An error occurred: ' . $e->getMessage());
         }
     }
 
-    
-    
+
+
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -93,7 +85,7 @@ class UserController extends Controller
 
 
 
-   
+
     public function getFormsByCity(Request $request)
     {
         $city = $request->get('city');
@@ -101,7 +93,7 @@ class UserController extends Controller
         return response()->json($forms);
     }
 
-   
+
     public function getToCountriesByForm(Request $request)
     {
         $formId = $request->get('form_id');
@@ -113,7 +105,7 @@ class UserController extends Controller
         ]);
     }
 
-    
+
     public function getPaymentByTo(Request $request)
     {
         $toId = $request->get('to_id');
@@ -130,16 +122,25 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-      
+
         try {
-            // Handle image upload
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|unique:users,email',
+                'password' => 'required|string|min:6',
+                'number' => 'required',
+                'address' => 'required',
+                'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'role_id' => 'nullable|exists:roles,id',
+                // Add validation for other fields like payment, from, to, etc.
+            ]);
             $imagePath = null;
             if ($request->hasFile('profile_image')) {
                 $image = $request->file('profile_image');
                 $imageName = time() . '.' . $image->getClientOriginalExtension();
                 $imagePath = $image->storeAs('profile_images', $imageName, 'public');
             }
-    
+
             // Create user
             $user = new User();
             $user->name = $request->name;
@@ -150,11 +151,11 @@ class UserController extends Controller
             $user->profile_image = $imagePath;
             $user->role_id = $request->role_id ?? 2; // Default to regular user if role not provided
             $user->save();
-            
+
             // Get location information
             $From = Location::where('id', $request->from)->pluck('from')->first();
             $To = Location::where('id', $request->to_)->pluck('to')->first();
-    
+
             // Save location assignment
             $assignLocation = new Userlocation();
             $assignLocation->city = $request->city;
@@ -166,10 +167,10 @@ class UserController extends Controller
             $assignLocation->user_id = $user->id;
             $assignLocation->is_active = ($request->payment_status === 'paid') ? 1 : 0;
             $assignLocation->save();
-   
+
             // Send SMS to the user about their location
             $this->sendLocationSms($user->number, $assignLocation->start_date, $assignLocation->end_date);
-    
+
             // Process payment
             $payment = new Payment();
             $payment->payment_method = $request->payment_method;
@@ -178,58 +179,88 @@ class UserController extends Controller
             $payment->payment_date = $request->payment_date;
             $payment->user_id = $user->id;
             $payment->location_id = $assignLocation->id;
-    
+
             // Handle Razorpay payment if chosen
             if ($request->payment_method === 'online' && $request->payment_status === 'paid') {
                 // Verify if we have a Razorpay payment ID
                 if (!$request->razorpay_payment_id) {
                     throw new \Exception('Online payment was selected but no Razorpay payment ID was provided.');
                 }
-    
+
                 $payment->razorpay_payment_id = $request->razorpay_payment_id;
                 $payment->razorpay_order_id = $request->razorpay_order_id;
             }
-    
+
             $payment->save();
-    
-          
-    
+
+
+
             return redirect()->route('users.index')->withSuccess('User created and payment processed successfully!');
         } catch (\Exception $e) {
-            
+
             return redirect()->back()->withError('Error: ' . $e->getMessage());
         }
     }
-    
+
     protected function sendLocationSms($userPhoneNumber, $startDate, $endDate)
     {
-        // Twilio client
         $twilio = new Client(env('TWILIO_SID'), env('TWILIO_AUTH_TOKEN'));
-    
-        $message = "Your location has been assigned from " . $startDate->format('Y-m-d') . " to " . $endDate->format('Y-m-d') . ".";
-        
+
+        $formattedNumber = $this->formatPhoneNumber($userPhoneNumber);
+        $start = Carbon::parse($startDate)->format('Y-m-d');
+        $end = Carbon::parse($endDate)->format('Y-m-d');
+
+        $message = "Your location has been assigned from {$start} to {$end}.";
+
         try {
             $twilio->messages->create(
-                $userPhoneNumber, // User's phone number
+                $formattedNumber,
                 [
                     'from' => env('TWILIO_PHONE_NUMBER'),
                     'body' => $message
                 ]
             );
         } catch (\Exception $e) {
-            // Log error or handle failure to send SMS
             Log::error('Twilio SMS failed: ' . $e->getMessage());
         }
     }
-    
-    
-    
+
+    protected function formatPhoneNumber($number)
+    {
+        
+        $number = preg_replace('/[^0-9+]/', '', $number);
+
+     
+        if (!str_starts_with($number, '+')) {
+            $number = '+91' . ltrim($number, '0'); 
+        }
+
+        return $number;
+    }
+
+
     /**
      * Display the specified resource.
      */
     public function show(User $user)
     {
-        return view('users.show', compact('user'));
+        try {
+           
+            $roleId = $user->role_id;
+           
+            $permissions = DB::table('role_has_permissions')
+                ->where('role_id', $roleId)
+                ->first();
+           
+            $payment = Payment::where('user_id', $user->id)->first();
+          
+            $userLocation = Userlocation::where('user_id', $user->id)->first();
+
+            return view('users.show', compact('user', 'payment', 'userLocation', 'permissions'));
+        } catch (\Exception $e) {
+            Log::error('Error in users index: ' . $e->getMessage());
+            return back()->with('error', 'An error occurred: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -239,7 +270,7 @@ class UserController extends Controller
     {
         $roles = Role::all();
         $cities = Location::all()->groupBy('city');
-        return view('users.edit', compact('user', 'roles','cities'));
+        return view('users.edit', compact('user', 'roles', 'cities'));
     }
 
     /**
