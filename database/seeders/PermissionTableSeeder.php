@@ -23,7 +23,7 @@ class PermissionTableSeeder extends Seeder
         // Create roles
         $roles = [
             'SuperAdmin', 
-            'Administrator',
+            // 'Administrator',
             'Member'
         ];
     
@@ -36,7 +36,7 @@ class PermissionTableSeeder extends Seeder
             "Users",
             "Role and Permission",
             "Location",
-            "Renewell",
+           
             "Chat Box"
         ];
     

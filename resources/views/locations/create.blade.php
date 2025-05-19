@@ -100,7 +100,7 @@
                             value="1"
                             {{ old('is_active') ? 'checked' : '' }}
                             class="form-checkbox h-5 w-5 text-green-600 border-white focus:ring-white rounded-full" />
-                        <label for="is_active" class="text-sm font-bold text-white"><span style="margin-left: 5px;"> Retrue Ticket Available</span></label>
+                        <label for="is_active" class="text-sm font-bold text-white"><span style="margin-left: 5px;"> Return Ticket Available</span></label>
                     </div>
 
 

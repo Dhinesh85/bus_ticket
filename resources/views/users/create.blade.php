@@ -145,9 +145,9 @@
 
                         <!-- Select Form (from origin) -->
                         <div class="mb-4">
-                            <label class="block mb-2 text-sm font-medium text-white">Select Form <span class="text-red-600">*</span></label>
+                            <label class="block mb-2 text-sm font-medium text-white">Select From <span class="text-red-600">*</span></label>
                             <select name="from" id="form-select" required class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <option selected disabled>Select Form</option>
+                                <option selected disabled>Select From</option>
                             </select>
                         </div>
 
@@ -155,7 +155,7 @@
                         <div class="mb-4">
                             <label class="block mb-2 text-sm font-medium text-white">To <span class="text-red-600">*</span></label>
                             <select name="to_" id="to-country-select" required class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <option selected disabled>Select To Country</option>
+                                <option selected disabled>Select To </option>
                             </select>
                         </div>
 
@@ -510,8 +510,8 @@
 
             citySelect.addEventListener('change', function() {
                 const city = this.value;
-                formSelect.innerHTML = '<option selected disabled>Select Form</option>';
-                toSelect.innerHTML = '<option selected disabled>Select To Country</option>';
+                formSelect.innerHTML = '<option selected disabled>Select From</option>';
+                toSelect.innerHTML = '<option selected disabled>Select To </option>';
                 paymentInput.value = '';
                 totalPaymentInput.value = '';
 
@@ -529,7 +529,7 @@
 
             formSelect.addEventListener('change', function() {
                 const formId = this.value;
-                toSelect.innerHTML = '<option selected disabled>Select To Country</option>';
+                toSelect.innerHTML = '<option selected disabled>Select To</option>';
                 paymentInput.value = '';
                 totalPaymentInput.value = '';
 

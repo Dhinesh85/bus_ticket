@@ -272,21 +272,21 @@
                                         <td class="flex space-x-2">
                                             <!-- View -->
                                             @if($permissions->show_permission == 1)
-                                            <a href="{{ route('category.show', $location->id) }}" class="action-icon icon-view" title="View">
+                                            <a href="{{ route('location.show', $location->id) }}" class="action-icon icon-view" title="View">
                                                 <i class="fas fa-eye"></i>
                                             </a>
                                             @endif
 
                                             <!-- Edit -->
-                                            <!-- @if($permissions->edit_permission == 1)
-                                            <a href="{{ route('category.edit', $location->id) }}" class="action-icon icon-edit" title="Edit">
+                                            @if($permissions->edit_permission == 1)
+                                            <a href="{{ route('location.edit', $location->id) }}" class="action-icon icon-edit" title="Edit">
                                                 <i class="fas fa-edit"></i>
                                             </a>
-                                            @endif -->
+                                            @endif
 
                                             <!-- Delete -->
                                             @if($permissions->delete_permission == 1)
-                                            <form action="{{ route('category.destroy', $location->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this location?')" class="inline">
+                                            <form action="{{ route('location.destroy', $location->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this location?')" class="inline">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="action-icon icon-delete" title="Delete">
